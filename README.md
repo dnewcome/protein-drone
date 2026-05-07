@@ -1,4 +1,4 @@
-# protein-synth
+# protein-drone
 
 A browser-based real-time granular synthesizer that turns proteins into music. Drone field of grains driven by per-residue chemistry; autonomous walkers traverse the protein's 3D contact graph and excite sustained harmonic partials of a tonal root. Inspired by [MIT research on protein sonification](https://news.mit.edu/2019/translating-proteins-music-0626).
 
