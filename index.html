@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>protein synth</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.163.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.163.0/examples/jsm/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>protein synth</h1>
+    <span id="status">idle</span>
+  </header>
+
+  <main>
+    <section id="viewer-pane">
+      <canvas id="viewer"></canvas>
+      <div id="overlay">
+        <div id="info"></div>
+      </div>
+    </section>
+
+    <aside id="controls">
+      <fieldset>
+        <legend>source</legend>
+        <label>preset
+          <select id="preset"></select>
+        </label>
+        <label>pdb id
+          <input id="pdbid" type="text" maxlength="6" placeholder="e.g. 2FZ6">
+        </label>
+        <button id="load">load</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>transport</legend>
+        <button id="play">play</button>
+        <button id="stop">stop</button>
+        <label>master
+          <input id="master" type="range" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>dynamics</legend>
+        <label>speed
+          <input id="speed" type="range" min="0" max="2" step="0.001" value="0.5">
+        </label>
+        <label>amplitude
+          <input id="amp" type="range" min="0" max="3" step="0.01" value="1">
+        </label>
+        <label>mode mix
+          <input id="modemix" type="range" min="0" max="1" step="0.01" value="0.5">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>swarm</legend>
+        <label>field
+          <input id="field" type="range" min="0" max="1.5" step="0.01" value="0.6">
+        </label>
+        <label>voices
+          <input id="voices" type="range" min="0.05" max="1" step="0.01" value="0.4">
+        </label>
+        <label>cohesion
+          <input id="cohesion" type="range" min="0" max="1" step="0.01" value="0.5">
+        </label>
+        <label>density
+          <input id="density" type="range" min="0.1" max="20" step="0.1" value="4">
+        </label>
+        <label>grain size
+          <input id="grain" type="range" min="0.01" max="0.4" step="0.005" value="0.08">
+        </label>
+        <label>spread
+          <input id="spread" type="range" min="0" max="1" step="0.01" value="0.6">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>tonal</legend>
+        <label>tonic
+          <select id="tonic">
+            <option>C</option><option>C#</option><option>D</option><option>D#</option>
+            <option>E</option><option>F</option><option>F#</option><option>G</option>
+            <option>G#</option><option>A</option><option>A#</option><option>B</option>
+          </select>
+        </label>
+        <label>scale
+          <select id="scale">
+            <option value="minPent">minor pentatonic</option>
+            <option value="majPent">major pentatonic</option>
+            <option value="dorian">dorian</option>
+            <option value="phrygian">phrygian</option>
+            <option value="lydian">lydian</option>
+            <option value="aeolian">aeolian</option>
+            <option value="chromatic">chromatic</option>
+          </select>
+        </label>
+        <label>octave range
+          <input id="octaves" type="range" min="1" max="5" step="1" value="3">
+        </label>
+        <label>quantize
+          <input id="quantize" type="range" min="0" max="1" step="0.01" value="1">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>walkers</legend>
+        <label>count
+          <input id="wcount" type="range" min="0" max="12" step="1" value="3">
+        </label>
+        <label>strategy
+          <select id="wstrategy">
+            <option value="contact">contact (graph)</option>
+            <option value="sequence">sequence (linear)</option>
+            <option value="levy">levy (occasional jumps)</option>
+            <option value="gradient">gradient (hydrophobicity)</option>
+            <option value="sschain">ss-chain (within helix/sheet)</option>
+            <option value="brownian">brownian (3d drift)</option>
+          </select>
+        </label>
+        <label>rate hz
+          <input id="wrate" type="range" min="0.5" max="30" step="0.1" value="6">
+        </label>
+        <label>gain
+          <input id="wgain" type="range" min="0" max="1" step="0.01" value="0.7">
+        </label>
+        <label>octave
+          <input id="woct" type="range" min="-2" max="2" step="1" value="0">
+        </label>
+        <label>repel
+          <input id="wrepel" type="range" min="0" max="1" step="0.01" value="0.0">
+        </label>
+        <label>decay
+          <input id="wdecay" type="range" min="0.1" max="6" step="0.05" value="1.5">
+        </label>
+        <label>harmonicity
+          <input id="wharmonicity" type="range" min="0" max="1" step="0.01" value="0.0">
+        </label>
+        <label>click
+          <input id="wclick" type="range" min="0" max="1" step="0.01" value="0.25">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>master fx</legend>
+        <label>cutoff
+          <input id="cutoff" type="range" min="100" max="18000" step="1" value="6000">
+        </label>
+        <label>resonance
+          <input id="reso" type="range" min="0.1" max="20" step="0.1" value="1.5">
+        </label>
+        <label>delay
+          <input id="delay" type="range" min="0" max="1" step="0.01" value="0.25">
+        </label>
+        <label>reverb
+          <input id="reverb" type="range" min="0" max="1" step="0.01" value="0.35">
+        </label>
+      </fieldset>
+
+      <fieldset>
+        <legend>midi</legend>
+        <button id="midi-enable">enable midi</button>
+        <div id="midi-status">disabled</div>
+      </fieldset>
+    </aside>
+  </main>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

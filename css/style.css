@@ -1,0 +1,150 @@
+:root {
+  --bg: #0b0d10;
+  --panel: #14181d;
+  --panel-2: #1c2128;
+  --line: #2a3038;
+  --text: #d8dee6;
+  --muted: #7e8794;
+  --accent: #6ee7b7;
+  --accent-2: #a78bfa;
+  --warn: #f59e0b;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 13px/1.4 ui-monospace, "JetBrains Mono", Menlo, Consolas, monospace;
+  overflow: hidden;
+}
+
+#app { display: flex; flex-direction: column; height: 100vh; }
+
+header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+header h1 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+#status {
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+main {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+
+#viewer-pane {
+  flex: 1;
+  position: relative;
+  background: radial-gradient(ellipse at center, #14181d 0%, #07080a 100%);
+  min-width: 0;
+}
+#viewer {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#overlay {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  right: 0.6rem;
+  pointer-events: none;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+#info { white-space: pre; }
+
+#controls {
+  width: 320px;
+  background: var(--panel);
+  border-left: 1px solid var(--line);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.5rem;
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  margin: 0 0 0.5rem 0;
+  padding: 0.4rem 0.6rem 0.6rem;
+  background: var(--panel-2);
+  min-width: 0;
+}
+legend {
+  color: var(--accent-2);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0 0.3rem;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.25rem 0;
+  min-width: 0;
+}
+label input[type="range"] {
+  flex: 1 1 60%;
+  min-width: 0;
+}
+label input[type="text"], label select {
+  flex: 1 1 60%;
+  min-width: 0;
+  max-width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.18rem 0.32rem;
+  font: inherit;
+}
+
+button {
+  background: var(--panel);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 0.32rem 0.6rem;
+  font: inherit;
+  cursor: pointer;
+  margin-right: 0.3rem;
+}
+button:hover { border-color: var(--accent); color: var(--accent); }
+button.active { color: var(--accent); border-color: var(--accent); }
+
+input[type="range"] {
+  appearance: none;
+  height: 4px;
+  background: var(--line);
+  border-radius: 2px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  cursor: pointer;
+}
+
+#midi-status { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
